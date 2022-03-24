@@ -60,6 +60,7 @@ public:
         quint8 port;
         quint8 dClass;
         quint8 dSubClass;
+        QString name;
     };
 
     typedef QList<Id> IdList;
@@ -103,6 +104,8 @@ protected:
 private:
     QUsbPrivate *const d_dummy;
     Q_DISABLE_COPY(QUsb)
+
+    static QString stringDescriptor(void *ctx, quint32 vid, quint32 pid, int index);
 };
 
 Q_DECLARE_METATYPE(QUsb::Config);

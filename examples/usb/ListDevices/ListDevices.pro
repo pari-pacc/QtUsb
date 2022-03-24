@@ -9,12 +9,13 @@ QT -= gui
 
 TARGET = ListDevices
 TEMPLATE = app
+CONFIG += c++11 sdk_no_version_check
 
 SOURCES += main.cpp \
-    usbexample.cpp
+	usbexample.cpp
 
 HEADERS += \
-    usbexample.h
+	usbexample.h
 
 target.path = $$[QT_INSTALL_EXAMPLES]/usb/ListDevices
 INSTALLS += target

@@ -1,6 +1,7 @@
 #include "qusb.h"
 #include "qusb_p.h"
 #include <QThread>
+#include <libusb.h>
 
 #define DbgPrintError() qWarning("In %s, at %s:%d", Q_FUNC_INFO, __FILE__, __LINE__)
 #define DbgPrintFuncName()                 \
@@ -296,6 +297,34 @@ void QUsb::checkDevices()
     }
 }
 
+QString QUsb::stringDescriptor(void *ctx, quint32 vid, quint32 pid, int)
+{
+    libusb_context *_ctx = static_cast<libusb_context *>(ctx);
+    libusb_device_handle *_hdev;
+
+    const int bufferSize = 256;
+    char buffer1[bufferSize];
+    char buffer2[bufferSize];
+    int ret;
+
+    memset(buffer1, 0, sizeof(buffer1));
+    memset(buffer2, 0, sizeof(buffer2));
+
+    _hdev = libusb_open_device_with_vid_pid(_ctx, vid, pid);
+    if (!_hdev)
+        return tr("<Unknown>");
+
+    uchar *p1 = reinterpret_cast<uchar *>(buffer1);
+    uchar *p2 = reinterpret_cast<uchar *>(buffer2);
+    ret = libusb_get_string_descriptor_ascii(_hdev, 1, p1, bufferSize);
+    ret = libusb_get_string_descriptor_ascii(_hdev, 2, p2, bufferSize);
+    libusb_close(_hdev);
+
+    return QObject::tr("%1 %2").arg(
+            QString::fromUtf8(buffer1, strlen(buffer1)),
+            QString::fromUtf8(buffer2, strlen(buffer2)));
+}
+
 /*!
     \brief Returns all present \c devices.
  */
@@ -326,7 +355,7 @@ QUsb::IdList QUsb::devices()
             id.vid = desc.idVendor;
             id.bus = libusb_get_bus_number(dev);
             id.port = libusb_get_port_number(dev);
-
+            id.name = stringDescriptor(ctx, id.vid, id.pid, i);
             list.append(id);
         }
     }
@@ -534,7 +563,13 @@ QUsb::Id::Id(quint16 _pid, quint16 _vid, quint8 _bus, quint8 _port, quint8 _clas
     \brief Copy constructor.
 */
 QUsb::Id::Id(const QUsb::Id &other)
-    : pid(other.pid), vid(other.vid), bus(other.bus), port(other.port), dClass(other.dClass), dSubClass(other.dSubClass)
+    : pid(other.pid)
+    , vid(other.vid)
+    , bus(other.bus)
+    , port(other.port)
+    , dClass(other.dClass)
+    , dSubClass(other.dSubClass)
+    , name(other.name)
 {
 }
 
@@ -564,12 +599,14 @@ QUsb::Id &QUsb::Id::operator=(QUsb::Id other)
     port = other.port;
     dClass = other.dClass;
     dSubClass = other.dSubClass;
+    name = other.name;
     return *this;
 }
 
 QUsb::Id::operator QString() const
 {
-    return QString::fromUtf8("Id(Vid: %1, Pid: %2, Bus: %3, Port: %4, Class: %5, Subclass: %6)")
+    return QString::fromUtf8("%1 : Id(Vid: %2, Pid: %3, Bus: %4, Port: %5, Class: %6, Subclass: %7)")
+            .arg(name.isEmpty() ? QObject::tr("<Unknown>") : name)
             .arg(vid, 4, 16, QChar::fromLatin1('0'))
             .arg(pid, 4, 16, QChar::fromLatin1('0'))
             .arg(bus)
