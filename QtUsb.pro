@@ -1,3 +1,4 @@
+QT_SYSROOT=/
 lessThan(QT_MAJOR_VERSION, 5) {
   lessThan(QT_MINOR_VERSION, 2) {
 	message("Cannot build current QtUsb sources with Qt version $${QT_VERSION}.")

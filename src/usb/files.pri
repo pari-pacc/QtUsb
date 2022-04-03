@@ -109,20 +109,20 @@ else:android {
 }
 
 else:unix {
-	INCLUDEPATH += /usr/local/include
+	INCLUDEPATH += $$[QT_SYSROOT]/usr/local/include
 	QMAKE_LFLAGS += -L$$[QT_SYSROOT]/usr/local/lib
 	QMAKE_LIBS += -lusb-1.0
 
-	!packagesExist(libusb-1.0):error("Could not find libusb-1.0 using pkg-config")
+	#!packagesExist(libusb-1.0):error("Could not find libusb-1.0 using pkg-config")
 	PKGCONFIG += libusb-1.0
 
 	osx {
-		!packagesExist(hidapi):error("Could not find hidapi using pkg-config")
+		#!packagesExist(hidapi):error("Could not find hidapi using pkg-config")
 		PKGCONFIG += hidapi
 	}
 
 	else {
-		!packagesExist(hidapi-libusb):error("Could not find hidapi-libusb using pkg-config")
+		#!packagesExist(hidapi-libusb):error("Could not find hidapi-libusb using pkg-config")
 		PKGCONFIG += hidapi-libusb
 	}
 	CONFIG += link_pkgconfig
