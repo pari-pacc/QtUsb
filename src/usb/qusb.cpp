@@ -232,7 +232,9 @@ QUsb::QUsb(QObject *parent)
         return;
     }
 
+#ifdef LIBUSB_HAVE_SET_OPTION
     libusb_set_option(d->m_ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_WARNING);
+#endif
 
     // Populate list once
     m_system_list = devices();
@@ -337,7 +339,9 @@ QUsb::IdList QUsb::devices()
     struct hid_device_info *hid_devs, *cur_hid_dev;
 
     libusb_init(&ctx);
+#ifdef LIBUSB_HAVE_SET_OPTION
     libusb_set_option(ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_NONE);
+#endif
     cnt = libusb_get_device_list(ctx, &devs); // get the list of devices
     if (cnt < 0) {
         qCritical("libusb_get_device_list Error");
@@ -456,12 +460,14 @@ void QUsb::setLogLevel(QUsb::LogLevel level)
     DbgPrintFuncName();
     Q_D(QUsb);
     m_log_level = level;
+#ifdef LIBUSB_HAVE_SET_OPTION
     if (m_log_level >= QUsb::logDebug)
         libusb_set_option(d->m_ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
     else if (m_log_level >= QUsb::logWarning)
         libusb_set_option(d->m_ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_WARNING);
     else
         libusb_set_option(d->m_ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_ERROR);
+#endif
 }
 
 /*!
