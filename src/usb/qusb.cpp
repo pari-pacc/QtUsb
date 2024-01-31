@@ -4,10 +4,10 @@
 #include <libusb.h>
 
 #define DbgPrintError() qWarning("In %s, at %s:%d", Q_FUNC_INFO, __FILE__, __LINE__)
-#define DbgPrintFuncName()                 \
+#define DbgPrintFuncName()             \
     if (m_log_level >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
-#define DbgPrintCB()                            \
+#define DbgPrintCB()                        \
     if (info->logLevel() >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
 
@@ -436,7 +436,7 @@ bool QUsb::removeDevice(const QUsb::Id &id)
       Return index of the filter, returns -1 if not found.
  */
 int QUsb::findDevice(const QUsb::Id &id,
-                         const QUsb::IdList &list) const
+                     const QUsb::IdList &list) const
 {
     DbgPrintFuncName();
     for (int i = 0; i < list.length(); i++) {

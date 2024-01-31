@@ -29,8 +29,8 @@ UsbExample::~UsbExample()
 void UsbExample::setupDevice()
 {
     /* There are 2 ways of identifying devices depending on the platform.
-   * You can use both methods, only one will be taken into account.
-   */
+     * You can use both methods, only one will be taken into account.
+     */
 
     qDebug("setupDevice");
 

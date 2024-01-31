@@ -3,10 +3,10 @@
 #include <QElapsedTimer>
 
 #define DbgPrintError() qWarning("In %s, at %s:%d", Q_FUNC_INFO, __FILE__, __LINE__)
-#define DbgPrintPrivFuncName()       \
+#define DbgPrintPrivFuncName()                        \
     if (m_classes.pub->m_log_level >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
-#define DbgPrintFuncName()       \
+#define DbgPrintFuncName()             \
     if (m_log_level >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
 
@@ -293,8 +293,7 @@ qint32 QUsbDevice::open()
                 if (rc == 0) {
                     m_id = tmp_id;
                     break;
-                }
-                else if (m_log_level >= QUsb::logWarning) {
+                } else if (m_log_level >= QUsb::logWarning) {
                     qWarning("Failed to open device: %s", libusb_strerror(static_cast<enum libusb_error>(rc)));
                 }
             }
@@ -472,7 +471,8 @@ quint16 QUsbDevice::pid() const
     \brief Return the device \c vid. (Vendor id)
  */
 quint16 QUsbDevice::vid() const
-{DbgPrintFuncName();
+{
+    DbgPrintFuncName();
     return m_id.vid;
 }
 

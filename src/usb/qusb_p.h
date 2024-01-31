@@ -6,14 +6,14 @@
 #include <QTimer>
 
 #if defined(Q_OS_MACOS)
-  #include <libusb.h>
-  #include <hidapi.h>
+#include <libusb.h>
+#include <hidapi.h>
 #elif defined(Q_OS_UNIX)
-  #include <libusb-1.0/libusb.h>
-  #include <hidapi.h>
+#include <libusb-1.0/libusb.h>
+#include <hidapi.h>
 #else
-  #include <libusb/libusb.h>
-  #include <hidapi/hidapi.h>
+#include <libusb/libusb.h>
+#include <hidapi/hidapi.h>
 #endif
 
 QT_BEGIN_NAMESPACE

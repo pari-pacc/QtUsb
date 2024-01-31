@@ -4,13 +4,13 @@
 #include <QElapsedTimer>
 
 #define DbgPrintError() qWarning("In %s, at %s:%d", Q_FUNC_INFO, __FILE__, __LINE__)
-#define DbgPrintFuncName()                     \
+#define DbgPrintFuncName()               \
     if (d->logLevel() >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
-#define DbgPrivPrintFuncName()                    \
+#define DbgPrivPrintFuncName()              \
     if (this->logLevel() >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
-#define DbgPrintCB(e)                          \
+#define DbgPrintCB(e)                    \
     if (e->logLevel() >= QUsb::logDebug) \
     qDebug() << "***[" << Q_FUNC_INFO << "]***"
 

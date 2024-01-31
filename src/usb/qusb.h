@@ -2,11 +2,12 @@
 #define QUSB_H
 
 #include "qusbglobal.h"
+#include <QObject>
 #include <QList>
 
 // Stupid windows conflict
 #ifdef interface
-  #undef interface
+#undef interface
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -21,7 +22,6 @@ class Q_USB_EXPORT QUsb : public QObject
     Q_PROPERTY(QUsb::LogLevel logLevel READ logLevel WRITE setLogLevel)
 
 public:
-
     enum LogLevel : quint8 {
         logNone = 0,
         logError = 1,

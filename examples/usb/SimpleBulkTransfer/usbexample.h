@@ -37,7 +37,6 @@ private:
 
     QUsb::Id m_filter;
     QUsb::Config m_config;
-
 };
 
 #endif // USBEXAMPLE_H
